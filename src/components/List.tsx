@@ -10,17 +10,21 @@ const Item = ({ name}: {name: string}) => {
 };
 
 const List = () => {
-  const [items, setItems] = useState(["Mango", "Banana", "Apple"]);
+  const [items, setItems] = useState([
+    { id: 1, name: "Mango" },
+    { id: 2, name: "Banana" },
+    { id: 3, name: "Apple" },
+  ]);
 
   const handleSort = () => {
-    setItems([...items].sort());
+    setItems([...items].sort((a, b) => a.name.localeCompare(b.name)));
   };
 
   return (
     <div>
       <button onClick={handleSort}>Sort</button>
-      {items.map((item, index) => (
-        <Item key={index} name={item} />
+      {items.map((item) => (
+        <Item key={item.id} name={item.name} />
       ))}
     </div>
   );
