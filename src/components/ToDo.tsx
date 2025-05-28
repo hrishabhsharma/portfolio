@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTheme } from "../hooks/useTheme";
 
 interface Todo {
   id: number;
@@ -14,6 +15,7 @@ interface ItemProps {
 }
 
 const ToDo = () => {
+  const { theme } = useTheme();
   const [todos, setTodos] = useState<Todo[]>([{
     id: Date.now(),
     text: 'Learn React',
@@ -57,12 +59,11 @@ const ToDo = () => {
   };
 
   return (
-    <>
-      <div className="max-w-2xl mx-auto">
-        {/* title */}
-        <h1 className="text-3xl font-bold text-center mb-8">Todo List</h1> 
+    <div className={`max-w-2xl mx-auto ${theme === 'dark' ? 'dark' : ''}`}>
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold text-center mb-8 dark:text-white">Todo List</h1>
         {/* container */}
-        <div className="bg-white p-6 rounded-lg shadow-lg"> 
+        <div className="bg-white p-6 rounded-lg shadow-lg">
           <p className="text-gray-600 mb-4">Add your tasks below:</p>
           {/* Input and Add Button */}
           <div className="flex gap-4 mb-6">
@@ -96,7 +97,7 @@ const ToDo = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -105,12 +106,10 @@ const TodoItem = ({ todo, onToggle, onDelete, onEdit }: ItemProps) => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
-    
     if (e.key === 'Enter' && target.value.trim()) {
       onEdit(todo.id, target.value);
       setIsEditing(false);
     }
-    
     if (e.key === 'Escape') {
       setIsEditing(false);
     }
@@ -141,7 +140,7 @@ const TodoItem = ({ todo, onToggle, onDelete, onEdit }: ItemProps) => {
             autoFocus
           />
         ) : (
-          <span 
+          <span
             className={`${todo.completed ? 'line-through text-gray-500' : ''} flex-1`}
             onDoubleClick={() => setIsEditing(true)}
           >
